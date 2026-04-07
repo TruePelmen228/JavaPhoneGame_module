@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
 
-package com.mycompany.javaphonegame_module;
+package com.mycompany.javaphonegame_module.game_common;
 
 /**
  *
@@ -10,8 +10,8 @@ package com.mycompany.javaphonegame_module;
  */
 public class JavaPhoneGame_module {
 
-     public static void main(String[] args) {
-        GameMessageHandler handler = new GameMessageHandler();
+     //public static void main(String[] args) {
+        /*GameMessageHandler handler = new GameMessageHandler();
         
         // Примеры сообщений
         String handshakeJson = "{\"type\":\"handshake\",\"game\":\"tic-tac-toe\",\"payload\":{\"player_id\":\"player_123\",\"player_name\":\"Алексей\"}}";
@@ -21,5 +21,5 @@ public class JavaPhoneGame_module {
         handler.handleMessage(handshakeJson);
         handler.handleMessage(moveJson);
         handler.handleMessage(pauseJson);
-    }
+    }*/
 }

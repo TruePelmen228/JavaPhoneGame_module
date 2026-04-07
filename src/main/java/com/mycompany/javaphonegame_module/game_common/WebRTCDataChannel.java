@@ -1,37 +1,83 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.javaphonegame_module.game_common;
 
-/**
- *
- * @author Марина
- */
-class WebRTCDataChannel {
-    void send(String message);      // Отправка JSON через WebRTC
-    void onMessage(String message); // Получение JSON из WebRTC
-    void close();                   // Закрытие канала
-}
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
-// Их реальная реализация (примерно так):
-public class RealWebRTCDataChannel implements WebRTCDataChannel {
-    private DataChannel nativeWebRTCChannel; // нативный WebRTC канал
+/**
+ * WebRTCDataChannel - только заглушка канала связи
+ * Отвечает только за отправку/прием сообщений и уведомление слушателей
+ */
+public class WebRTCDataChannel {
+    private Consumer<String> messageHandler;
+    private List<String> messageHistory = new ArrayList<>();
+    private boolean isOpen = true;
+    private String channelId;
     
-    @Override
+    static {
+        try {
+            System.setOut(new PrintStream(System.out, true, "UTF-8"));
+            System.setErr(new PrintStream(System.err, true, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public WebRTCDataChannel(String channelId) {
+        this.channelId = channelId;
+    }
+    
     public void send(String message) {
-        // Отправка JSON через WebRTC
-        nativeWebRTCChannel.send(message.getBytes());
+        if (!isOpen) {
+            System.out.println("Канал " + channelId + " закрыт, нельзя отправить сообщение");
+            return;
+        }
+        
+        System.out.println("\n📤 [WebRTC-" + channelId + "] Отправка сообщения:");
+        System.out.println("   " + message);
+        messageHistory.add(message);
     }
     
-    @Override
-    public void onMessage(String message) {
-        // Вызывается, когда приходит сообщение из WebRTC
-        // Они просто передают JSON дальше в ваш модуль
+    // Этот метод вызывается внешним обработчиком при получении сообщения
+    public void receiveMessage(String message) {
+        if (!isOpen) {
+            System.out.println("Канал закрыт, нельзя принять сообщение");
+            return;
+        }
+        
+        System.out.println("\n📥 [WebRTC-" + channelId + "] Получено сообщение:");
+        System.out.println("   " + message);
+        messageHistory.add(message);
+        
+        if (messageHandler != null) {
+            messageHandler.accept(message);
+        }
     }
     
-    @Override
     public void close() {
-        nativeWebRTCChannel.close();
+        isOpen = false;
+        System.out.println("🔌 [WebRTC-" + channelId + "] Канал закрыт");
+    }
+    
+    public void setMessageHandler(Consumer<String> handler) {
+        this.messageHandler = handler;
+    }
+    
+    public List<String> getMessageHistory() {
+        return new ArrayList<>(messageHistory);
+    }
+    
+    public boolean isOpen() {
+        return isOpen;
+    }
+    
+    public String getChannelId() {
+        return channelId;
+    }
+    
+    public void clearHistory() {
+        messageHistory.clear();
     }
 }

@@ -1,21 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.javaphonegame_module.game_common;
+
 import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.Map;
+
 public class GameMessage {
-    private String type;           // handshake, move, move_response, game_over, control, error
-    private String game;           // tic-tac-toe, sea_battle, chess
-    private String moveId;         // для move
-    private String inResponseTo;   // для move_response
-    private String controlType;    // для control (pause, resume, player_left)
-    private Integer errorCode;     // для error
-    private String errorType;      // для error
-    private String message;        // для error и game_over
-    private Map<String, Object> payload;  // все остальные данные
+    private String type;
+    private String game;
+    private String moveId;
+    private String inResponseTo;
+    private String controlType;
+    private Integer errorCode;
+    private String errorType;
+    private String message;
+    private Map<String, Object> payload;
     
     public GameMessage() {}
     
@@ -23,7 +21,6 @@ public class GameMessage {
         this.type = type;
         this.game = game;
     }
-    
     
     public static GameMessage handshake(String game, String playerId, String playerName) {
         GameMessage msg = new GameMessage("handshake", game);
@@ -97,7 +94,6 @@ public class GameMessage {
         return msg;
     }
     
-    // from-to json
     public String toJson() {
         return new Gson().toJson(this);
     }
@@ -106,7 +102,6 @@ public class GameMessage {
         return new Gson().fromJson(json, GameMessage.class);
     }
     
-    // additional funcs
     @SuppressWarnings("unchecked")
     public Map<String, Object> getCoordinates() {
         if (payload != null && payload.containsKey("coordinates")) {
@@ -131,7 +126,7 @@ public class GameMessage {
         return payload != null ? (String) payload.get("reason") : null;
     }
     
-    // getters+setters
+    // Getters and Setters
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
     public String getGame() { return game; }

@@ -4,13 +4,33 @@
     <groupId>com.mycompany</groupId>
     <artifactId>JavaPhoneGame_module</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    
     <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <javafx.version>21</javafx.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>23</maven.compiler.release>
-        <exec.mainClass>com.mycompany.javaphonegame_module.JavaPhoneGame_module</exec.mainClass>
     </properties>
+    
     <dependencies>
+        <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-controls</artifactId>
+        <version>21</version>
+    </dependency>
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-fxml</artifactId>
+        <version>21</version>
+    </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+    
+    
+    
     <!-- Gson для JSON сериализации/десериализации -->
     <dependency>
         <groupId>com.google.code.gson</groupId>
@@ -21,17 +41,13 @@
     
     <!-- FXGL игровой движок -->
     <dependency>
-        <groupId>com.github.almasb</groupId>
-        <artifactId>fxgl</artifactId>
-        <version>17.3</version>
+    <groupId>com.github.almasb</groupId>
+    <artifactId>fxgl</artifactId>
+    <version>17.3</version>
     </dependency>
     
     <!-- JavaFX (FXGL подтягивает сам, но на всякий случай) -->
-    <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-controls</artifactId>
-        <version>21</version>
-    </dependency>
+   
     
     <!-- Для логирования (опционально) -->
     <dependency>
@@ -40,4 +56,40 @@
         <version>2.0.9</version>
     </dependency>
 </dependencies>
+<build>
+        <plugins>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.1.0</version>
+            <configuration>
+                <!-- ПОЛНОЕ имя класса с пакетом -->
+                <mainClass>com.mycompany.javaphonegame_module.game_common.GameMenuApp</mainClass>
+                 <executable>java</executable>
+                <arguments>
+                    <argument>-Dfile.encoding=UTF-8</argument>
+                    <argument>-classpath</argument>
+                    <classpath/>
+                    <argument>com.mycompany.javaphonegame_module.game_common.GameMenuApp</argument>
+                </arguments>
+            </configuration>
+        </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
